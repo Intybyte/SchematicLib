@@ -55,7 +55,7 @@ public class SchematicLoaderUnloader {
 
     public void save(File file, Schematic schematic) {
         try (ZipOutputStream zos = new ZipOutputStream(Files.newOutputStream(file.toPath()))) {
-            String json = GSON.toJson(schematic);
+            String json = GSON.toJson(schematic, Schematic.class);
             byte[] data = json.getBytes(StandardCharsets.UTF_8);
 
             ZipEntry entry = new ZipEntry(file.getName());
