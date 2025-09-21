@@ -1,10 +1,12 @@
-package me.vaan.schematiclib.file.schematic;
+package me.vaan.schematiclib.file.formats;
 
 import com.google.gson.FormattingStyle;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import me.vaan.schematiclib.base.block.BlockKey;
 import me.vaan.schematiclib.base.block.IBlock;
+import me.vaan.schematiclib.base.formats.SchematicLoader;
+import me.vaan.schematiclib.base.formats.SchematicSaver;
 import me.vaan.schematiclib.base.schematic.Schematic;
 import me.vaan.schematiclib.file.serializers.BlockKeyAdapter;
 import me.vaan.schematiclib.file.serializers.IBlockAdapter;
@@ -19,7 +21,10 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-public class SchematicLoaderUnloader {
+/*
+ * Base schematic backed by a zipped json list of IBlocks (x,y,z,key)
+ */
+public class VaanFormat implements SchematicLoader, SchematicSaver {
     public static final Gson GSON = new GsonBuilder()
         .registerTypeAdapter(BlockKey.class, new BlockKeyAdapter())
         .registerTypeAdapter(IBlock.class, new IBlockAdapter())
