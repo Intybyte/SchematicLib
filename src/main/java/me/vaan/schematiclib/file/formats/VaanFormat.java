@@ -14,8 +14,8 @@ import me.vaan.schematiclib.file.serializers.SchematicAdapter;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -33,9 +33,8 @@ public class VaanFormat implements SchematicLoader, SchematicSaver {
         .create();
 
 
-    public Schematic load(File file) {
+    public Schematic load(File file) throws Throwable {
         try (ZipInputStream zis = new ZipInputStream(Files.newInputStream(file.toPath()))) {
-
             ZipEntry entry;
             while ((entry = zis.getNextEntry()) != null) {
                 if (entry.getName().equals(file.getName())) {
@@ -51,14 +50,12 @@ public class VaanFormat implements SchematicLoader, SchematicSaver {
 
                 zis.closeEntry();
             }
-
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-        return null;
+
+        throw new FileAlreadyExistsException("End with fail");
     }
 
-    public void save(File file, Schematic schematic) {
+    public void save(File file, Schematic schematic) throws Throwable {
         try (ZipOutputStream zos = new ZipOutputStream(Files.newOutputStream(file.toPath()))) {
             String json = GSON.toJson(schematic, Schematic.class);
             byte[] data = json.getBytes(StandardCharsets.UTF_8);
@@ -67,8 +64,8 @@ public class VaanFormat implements SchematicLoader, SchematicSaver {
             zos.putNextEntry(entry);
             zos.write(data);
             zos.closeEntry();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+
+        throw new FileAlreadyExistsException("End with fail");
     }
 }
