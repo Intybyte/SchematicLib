@@ -23,7 +23,7 @@ public class SchematicLoaderUnloader {
     public static final Gson GSON = new GsonBuilder()
         .registerTypeAdapter(BlockKey.class, new BlockKeyAdapter())
         .registerTypeAdapter(IBlock.class, new IBlockAdapter())
-        .registerTypeAdapter(SchematicAdapter.class, new SchematicAdapter())
+        .registerTypeAdapter(Schematic.class, new SchematicAdapter())
         .setFormattingStyle(FormattingStyle.COMPACT)
         .create();
 
