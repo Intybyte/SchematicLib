@@ -2,6 +2,7 @@ package me.vaan.schematiclib.base.schematic;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 import me.vaan.schematiclib.base.block.IBlock;
 import me.vaan.schematiclib.file.block.FileBlock;
@@ -9,6 +10,7 @@ import me.vaan.schematiclib.file.block.FileBlock;
 import java.util.ArrayList;
 import java.util.List;
 
+@Setter
 @Getter
 @Accessors(fluent = true)
 @AllArgsConstructor
