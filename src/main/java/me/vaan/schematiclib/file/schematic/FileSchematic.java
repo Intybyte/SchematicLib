@@ -6,6 +6,7 @@ import lombok.experimental.Accessors;
 import me.vaan.schematiclib.base.block.IBlock;
 import me.vaan.schematiclib.base.schematic.Schematic;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -13,4 +14,8 @@ import java.util.List;
 @AllArgsConstructor
 public class FileSchematic implements Schematic {
     private List<IBlock> positions;
+
+    public FileSchematic() {
+        this(new ArrayList<>());
+    }
 }
