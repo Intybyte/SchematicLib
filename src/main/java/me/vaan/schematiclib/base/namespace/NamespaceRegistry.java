@@ -45,10 +45,14 @@ public class NamespaceRegistry {
         return target.equals(worldBlock);
     }
 
-    public void setBlock(IBlock block, UUID world) {
-        IBlock old = getBlock(block.x(), block.y(), block.z(), world);
+    public void removeBlock(int x, int y, int z, UUID world) {
+        IBlock old = getBlock(x, y, z, world);
         NamespaceHandler oldHandler = getNamespaceHandler(old.key().namespace());
         oldHandler.destroy(old, world);
+    }
+
+    public void setBlock(IBlock block, UUID world) {
+        removeBlock(block.x(), block.y(), block.z(), world);
 
         NamespaceHandler newHandler = getNamespaceHandler(block.key().namespace());
         newHandler.place(block, world);
