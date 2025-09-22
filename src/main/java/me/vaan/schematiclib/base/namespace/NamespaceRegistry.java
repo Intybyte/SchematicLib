@@ -39,4 +39,18 @@ public class NamespaceRegistry {
 
         return defaultHandler.get(x, y, z, world);
     }
+
+    public boolean matches(IBlock target, UUID world) {
+        IBlock worldBlock = getBlock(target.x(), target.y(), target.z(), world);
+        return target.equals(worldBlock);
+    }
+
+    public void setBlock(IBlock block, UUID world) {
+        IBlock old = getBlock(block.x(), block.y(), block.z(), world);
+        NamespaceHandler oldHandler = getNamespaceHandler(old.key().namespace());
+        oldHandler.destroy(old, world);
+
+        NamespaceHandler newHandler = getNamespaceHandler(block.key().namespace());
+        newHandler.place(block, world);
+    }
 }
