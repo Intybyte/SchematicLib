@@ -67,7 +67,5 @@ public class VaanFormat implements SchematicLoader, SchematicSaver {
             zos.write(data);
             zos.closeEntry();
         }
-
-        throw new FileAlreadyExistsException("End with fail");
     }
 }
