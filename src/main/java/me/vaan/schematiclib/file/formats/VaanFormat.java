@@ -8,6 +8,7 @@ import me.vaan.schematiclib.base.block.IBlock;
 import me.vaan.schematiclib.base.formats.SchematicLoader;
 import me.vaan.schematiclib.base.formats.SchematicSaver;
 import me.vaan.schematiclib.base.schematic.Schematic;
+import me.vaan.schematiclib.file.block.FileCoord;
 import me.vaan.schematiclib.file.serializers.BlockKeyAdapter;
 import me.vaan.schematiclib.file.serializers.IBlockAdapter;
 import me.vaan.schematiclib.file.serializers.SchematicAdapter;
@@ -57,7 +58,8 @@ public class VaanFormat implements SchematicLoader, SchematicSaver {
 
     public void save(File file, Schematic schematic) throws Throwable {
         try (ZipOutputStream zos = new ZipOutputStream(Files.newOutputStream(file.toPath()))) {
-            String json = GSON.toJson(schematic, Schematic.class);
+            //move to 0,0,0 and save
+            String json = GSON.toJson(schematic.moveOrigin(new FileCoord()), Schematic.class);
             byte[] data = json.getBytes(StandardCharsets.UTF_8);
 
             ZipEntry entry = new ZipEntry(file.getName());
