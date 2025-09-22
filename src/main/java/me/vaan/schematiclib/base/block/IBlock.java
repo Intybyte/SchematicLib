@@ -1,11 +1,8 @@
 package me.vaan.schematiclib.base.block;
 
-public interface IBlock {
-    //offsets
-    int x();
-    int y();
-    int z();
+import me.vaan.schematiclib.file.block.FileBlock;
 
+public interface IBlock extends ICoord {
     //keys
     BlockKey key();
 
@@ -15,5 +12,14 @@ public interface IBlock {
         if (this.z() != block.z()) return false;
 
         return this.key().full().equals(block.key().full());
+    }
+
+    default IBlock add(ICoord coord) {
+        return new FileBlock(
+            x() + coord.x(),
+            y() + coord.y(),
+            z() + coord.z(),
+            key()
+        );
     }
 }
