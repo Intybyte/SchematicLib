@@ -33,12 +33,13 @@ public class VaanFormat implements SchematicLoader, SchematicSaver {
         .setFormattingStyle(FormattingStyle.COMPACT)
         .create();
 
+    public static final String INTERNAL_JSON_NAME = "vaan_formatted_schematic.json";
 
     public Schematic load(File file) throws Throwable {
         try (ZipInputStream zis = new ZipInputStream(Files.newInputStream(file.toPath()))) {
             ZipEntry entry;
             while ((entry = zis.getNextEntry()) != null) {
-                if (entry.getName().equals(file.getName())) {
+                if (entry.getName().equals(INTERNAL_JSON_NAME)) {
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     byte[] buffer = new byte[1024];
                     int read;
@@ -62,7 +63,7 @@ public class VaanFormat implements SchematicLoader, SchematicSaver {
             String json = GSON.toJson(schematic.moveOrigin(new FileCoord()), Schematic.class);
             byte[] data = json.getBytes(StandardCharsets.UTF_8);
 
-            ZipEntry entry = new ZipEntry(file.getName());
+            ZipEntry entry = new ZipEntry(INTERNAL_JSON_NAME);
             zos.putNextEntry(entry);
             zos.write(data);
             zos.closeEntry();
