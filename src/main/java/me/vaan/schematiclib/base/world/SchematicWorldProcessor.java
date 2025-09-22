@@ -15,13 +15,12 @@ public interface SchematicWorldProcessor {
     NamespaceRegistry registry();
 
     default boolean matches(OffsetSchematic schematic, UUID world) {
-        for (IBlock block : schematic) {
-            if (block == null) {
+        for (IBlock real : schematic.realBlocks()) {
+            if (real == null) {
                 continue;
             }
 
-            IBlock real = schematic.of(block);
-            NamespaceHandler handler = registry().getNamespaceHandler(block.key().namespace());
+            NamespaceHandler handler = registry().getNamespaceHandler(real.key().namespace());
 
             if (!handler.matches(real, world)) {
                 return false;
@@ -32,13 +31,12 @@ public interface SchematicWorldProcessor {
     }
 
     default void place(OffsetSchematic schematic, UUID world) {
-        for (IBlock block : schematic) {
-            if (block == null) {
+        for (IBlock real : schematic.realBlocks()) {
+            if (real == null) {
                 continue;
             }
 
-            IBlock real = schematic.of(block);
-            NamespaceHandler handler = registry().getNamespaceHandler(block.key().namespace());
+            NamespaceHandler handler = registry().getNamespaceHandler(real.key().namespace());
             handler.place(real, world);
         }
     }
