@@ -14,6 +14,10 @@ public interface IBlock extends ICoord {
         return this.key().full().equals(block.key().full());
     }
 
+    default boolean sameType(IBlock block) {
+        return key().equals(block.key());
+    }
+
     default IBlock add(ICoord coord) {
         return new FileBlock(
             x() + coord.x(),

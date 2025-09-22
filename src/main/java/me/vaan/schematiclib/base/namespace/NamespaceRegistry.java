@@ -42,7 +42,7 @@ public class NamespaceRegistry {
 
     public boolean matches(IBlock target, UUID world) {
         IBlock worldBlock = getBlock(target.x(), target.y(), target.z(), world);
-        return target.equals(worldBlock);
+        return target.matches(worldBlock);
     }
 
     public void removeBlock(int x, int y, int z, UUID world) {
