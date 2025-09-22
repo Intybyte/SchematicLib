@@ -1,5 +1,6 @@
 package me.vaan.schematiclib.base.block;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 
@@ -8,6 +9,7 @@ import java.util.regex.Pattern;
 
 @Getter
 @Accessors(fluent = true)
+@EqualsAndHashCode
 public class BlockKey {
     public static final Pattern NAMESPACED_KEY_PATTERN = Pattern.compile("^[a-z0-9._-]+:[a-z0-9._-]+$");
     private final String namespace;
