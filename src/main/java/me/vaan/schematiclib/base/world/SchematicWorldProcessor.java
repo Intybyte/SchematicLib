@@ -41,6 +41,17 @@ public interface SchematicWorldProcessor {
         }
     }
 
+    default void destroy(OffsetSchematic schematic, UUID world) {
+        for (IBlock real : schematic.realBlocks()) {
+            if (real == null) {
+                continue;
+            }
+
+            NamespaceHandler handler = registry().getNamespaceHandler(real.key().namespace());
+            handler.destroy(real, world);
+        }
+    }
+
     default Schematic schematicOf(int xA, int yA, int zA, int xB, int yB, int zB, UUID world) {
         List<IBlock> positions = new ArrayList<>();
         int xmin = Math.min(xA, xB);
