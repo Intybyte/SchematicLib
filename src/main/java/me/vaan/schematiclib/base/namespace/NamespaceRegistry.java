@@ -51,6 +51,12 @@ public class NamespaceRegistry {
         oldHandler.destroy(old, world);
     }
 
+    public void breakBlock(int x, int y, int z, UUID world) {
+        IBlock old = getBlock(x, y, z, world);
+        NamespaceHandler oldHandler = getNamespaceHandler(old.key().namespace());
+        oldHandler.breakNaturally(old, world);
+    }
+
     public void setBlock(IBlock block, UUID world) {
         removeBlock(block.x(), block.y(), block.z(), world);
 

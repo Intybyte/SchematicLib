@@ -9,5 +9,13 @@ public interface NamespaceHandler {
 
     IBlock get(int x, int y, int z, UUID world);
 
+    /**
+     * Removes the block without dropping anything, meant for commands
+     */
     void destroy(IBlock block, UUID world);
+
+    /**
+     * Removes the block without dropping the relative block
+     */
+    void breakNaturally(IBlock block, UUID world);
 }

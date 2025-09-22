@@ -41,13 +41,24 @@ public interface SchematicWorldProcessor {
     }
 
     default void destroy(OffsetSchematic schematic, UUID world) {
+        NamespaceRegistry reg = registry();
         for (IBlock real : schematic.realBlocks()) {
             if (real == null) {
                 continue;
             }
 
-            NamespaceHandler handler = registry().getNamespaceHandler(real.key().namespace());
-            handler.destroy(real, world);
+            reg.removeBlock(real.x(), real.y(), real.z(), world);
+        }
+    }
+
+    default void breakNaturally(OffsetSchematic schematic, UUID world) {
+        NamespaceRegistry reg = registry();
+        for (IBlock real : schematic.realBlocks()) {
+            if (real == null) {
+                continue;
+            }
+
+            reg.breakBlock(real.x(), real.y(), real.z(), world);
         }
     }
 
