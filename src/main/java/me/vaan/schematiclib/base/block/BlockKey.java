@@ -14,8 +14,8 @@ public class BlockKey {
     private final String key;
 
     public BlockKey(String namespace, String key) {
-        this.namespace = namespace.toLowerCase(Locale.ROOT);
-        this.key = key.toLowerCase(Locale.ROOT);
+        this.namespace = namespace;
+        this.key = key;
 
         if (!isOneSeparator(this.full())) {
             throw new UnsupportedOperationException("Invalid NS keys, found more than 1 ':'");
