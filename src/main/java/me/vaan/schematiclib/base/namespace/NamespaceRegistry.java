@@ -1,5 +1,6 @@
 package me.vaan.schematiclib.base.namespace;
 
+import me.vaan.schematiclib.base.block.BlockKey;
 import me.vaan.schematiclib.base.block.IBlock;
 
 import java.util.HashMap;
@@ -62,5 +63,14 @@ public class NamespaceRegistry {
 
         NamespaceHandler newHandler = getNamespaceHandler(block.key().namespace());
         newHandler.place(block, world);
+    }
+
+    public BlockKey toMaterial(BlockKey key) {
+        // nothing to do
+        String namespace = key.namespace();
+        if (namespace.equals(defaultNamespace)) return key;
+
+        NamespaceHandler namespaceHandler = getNamespaceHandler(namespace);
+        return namespaceHandler.toMaterial(key);
     }
 }

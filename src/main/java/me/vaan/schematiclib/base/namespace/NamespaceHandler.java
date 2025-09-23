@@ -1,5 +1,6 @@
 package me.vaan.schematiclib.base.namespace;
 
+import me.vaan.schematiclib.base.block.BlockKey;
 import me.vaan.schematiclib.base.block.IBlock;
 
 import java.util.UUID;
@@ -18,4 +19,9 @@ public interface NamespaceHandler {
      * Removes the block without dropping the relative block
      */
     void breakNaturally(IBlock block, UUID world);
+
+    /**
+     * For custom blocks gets their material key if any
+     */
+    BlockKey toMaterial(BlockKey custom);
 }

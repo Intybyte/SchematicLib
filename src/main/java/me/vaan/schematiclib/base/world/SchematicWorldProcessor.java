@@ -1,11 +1,13 @@
 package me.vaan.schematiclib.base.world;
 
+import me.vaan.schematiclib.base.block.BlockKey;
 import me.vaan.schematiclib.base.block.IBlock;
-import me.vaan.schematiclib.base.namespace.NamespaceHandler;
 import me.vaan.schematiclib.base.namespace.NamespaceRegistry;
 import me.vaan.schematiclib.base.schematic.OffsetSchematic;
 import me.vaan.schematiclib.base.schematic.OffsetSchematicImpl;
 import me.vaan.schematiclib.base.schematic.Schematic;
+import me.vaan.schematiclib.file.block.FileBlock;
+import me.vaan.schematiclib.file.schematic.FileSchematic;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +62,23 @@ public interface SchematicWorldProcessor {
 
             reg.breakBlock(real.x(), real.y(), real.z(), world);
         }
+    }
+
+    default Schematic parseToMaterial(Schematic schematic) {
+        List<IBlock> positions = new ArrayList<>();
+        NamespaceRegistry reg = registry();
+        for (IBlock block : schematic) {
+            if (block == null) {
+                continue;
+            }
+
+            BlockKey key = reg.toMaterial(block.key());
+            positions.add(
+                new FileBlock(block.x(), block.y(), block.z(), key)
+            );
+        }
+
+        return new FileSchematic(positions);
     }
 
     default Schematic schematicOf(int xA, int yA, int zA, int xB, int yB, int zB, UUID world) {
