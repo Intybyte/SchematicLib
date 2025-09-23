@@ -5,13 +5,11 @@ import lombok.Getter;
 import lombok.experimental.Accessors;
 
 import java.util.Locale;
-import java.util.regex.Pattern;
 
 @Getter
 @Accessors(fluent = true)
 @EqualsAndHashCode
 public class BlockKey {
-    public static final Pattern NAMESPACED_KEY_PATTERN = Pattern.compile("^[a-z0-9._-]+:[a-z0-9._-]+$");
     private final String namespace;
     private final String key;
 
@@ -19,13 +17,22 @@ public class BlockKey {
         this.namespace = namespace.toLowerCase(Locale.ROOT);
         this.key = key.toLowerCase(Locale.ROOT);
 
-        if (!NAMESPACED_KEY_PATTERN.matcher(this.full()).matches()) {
-            throw new IllegalArgumentException("Invalid NS key: " + this.full());
+        if (!isOneSeparator(this.full())) {
+            throw new UnsupportedOperationException("Invalid NS keys, found more than 1 ':'");
         }
     }
 
     public static BlockKey mc(String key) {
         return new BlockKey("minecraft", key);
+    }
+
+    public static BlockKey fromString(String key) {
+        if (!isOneSeparator(key)) {
+            throw new UnsupportedOperationException("Invalid NS keys, found more than 1 ':'");
+        }
+
+        String[] split = key.split(":");
+        return new BlockKey(split[0], split[1]);
     }
 
     public String full() {
@@ -34,5 +41,9 @@ public class BlockKey {
 
     public boolean matches(String s) {
         return this.full().equals(s);
+    }
+
+    private static boolean isOneSeparator(String str) {
+        return (str.length() - str.replace(":", "").length()) == 1;
     }
 }
