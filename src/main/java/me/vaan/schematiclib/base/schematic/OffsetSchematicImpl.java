@@ -18,14 +18,12 @@ import java.util.List;
 public class OffsetSchematicImpl implements OffsetSchematic {
     protected final int x, y, z;
     protected List<IBlock> positions;
-    protected List<IBlock> realBlocks;
 
     public OffsetSchematicImpl(int x, int y, int z, List<IBlock> positions) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.positions = positions;
-        this.realBlocks = realBlocks();
     }
 
     public OffsetSchematicImpl(List<IBlock> blocks) {
