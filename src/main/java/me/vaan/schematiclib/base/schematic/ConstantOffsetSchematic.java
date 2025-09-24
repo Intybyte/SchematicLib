@@ -13,7 +13,7 @@ import java.util.List;
 @Setter
 @Getter
 @Accessors(fluent = true)
-public class ConstantOffsetSchematic implements OffsetSchematic {
+public class ConstantOffsetSchematic implements IConstantOffsetSchematic {
     protected final int x, y, z;
     protected List<IBlock> positions;
     protected Schematic realBlocks;
@@ -23,7 +23,7 @@ public class ConstantOffsetSchematic implements OffsetSchematic {
         this.y = y;
         this.z = z;
         this.positions = positions;
-        this.realBlocks = OffsetSchematic.super.realBlocks();
+        this.realBlocks = IConstantOffsetSchematic.super.realBlocks();
     }
 
     public ConstantOffsetSchematic(List<IBlock> blocks) {

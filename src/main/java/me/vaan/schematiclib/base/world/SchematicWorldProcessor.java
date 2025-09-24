@@ -3,6 +3,7 @@ package me.vaan.schematiclib.base.world;
 import me.vaan.schematiclib.base.block.BlockKey;
 import me.vaan.schematiclib.base.block.IBlock;
 import me.vaan.schematiclib.base.namespace.NamespaceRegistry;
+import me.vaan.schematiclib.base.schematic.IConstantOffsetSchematic;
 import me.vaan.schematiclib.base.schematic.OffsetSchematic;
 import me.vaan.schematiclib.base.schematic.OffsetSchematicImpl;
 import me.vaan.schematiclib.base.schematic.Schematic;
@@ -18,11 +19,29 @@ public interface SchematicWorldProcessor {
 
     default boolean matches(OffsetSchematic schematic, UUID world) {
         NamespaceRegistry reg = registry();
-        for (IBlock real : schematic.realBlocks()) {
-            if (real == null) {
+
+        if (schematic instanceof IConstantOffsetSchematic) {
+            IConstantOffsetSchematic constantOffsetSchematic = (IConstantOffsetSchematic) schematic;
+            for (IBlock real : constantOffsetSchematic.realBlocks()) {
+                if (real == null) {
+                    continue;
+                }
+
+                if (!reg.matches(real, world)) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        // only compute if needed
+        for (IBlock toProcess : schematic.positions()) {
+            if (toProcess == null) {
                 continue;
             }
 
+            IBlock real = schematic.of(toProcess);
             if (!reg.matches(real, world)) {
                 return false;
             }
@@ -79,6 +98,23 @@ public interface SchematicWorldProcessor {
         }
 
         return new FileSchematic(positions);
+    }
+
+    default List<BlockKey> parseToMaterialList(Schematic schematic) {
+        List<IBlock> positions = schematic.positions();
+        List<BlockKey> materials = new ArrayList<>(positions.size());
+        NamespaceRegistry reg = registry();
+
+        for (IBlock block : positions) {
+            if (block == null) {
+                continue;
+            }
+
+            BlockKey key = reg.toMaterial(block.key());
+            materials.add(key);
+        }
+
+        return materials;
     }
 
     default Schematic schematicOf(int xA, int yA, int zA, int xB, int yB, int zB, UUID world) {

@@ -15,6 +15,9 @@ public interface OffsetSchematic extends Schematic, ICoord {
         return new FileBlock(block.x() + this.x(), block.y() + this.y(), block.z() + this.z(), block.key());
     }
 
+    /**
+     * Please override this or not use it directly if you need to perform many checks
+     */
     default Schematic realBlocks() {
         List<IBlock> current = this.positions();
         List<IBlock> blocks = new ArrayList<>(current.size());
