@@ -7,28 +7,26 @@ import me.vaan.schematiclib.base.block.IBlock;
 import me.vaan.schematiclib.file.block.FileBlock;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Setter
 @Getter
 @Accessors(fluent = true)
-/**
- * Do not use getPosition and add entries, it will lose of consistencies, consider this a constant
- */
-public class OffsetSchematicImpl implements OffsetSchematic {
+public class ConstantOffsetSchematic implements OffsetSchematic {
     protected final int x, y, z;
     protected List<IBlock> positions;
-    protected List<IBlock> realBlocks;
+    protected Schematic realBlocks;
 
-    public OffsetSchematicImpl(int x, int y, int z, List<IBlock> positions) {
+    public ConstantOffsetSchematic(int x, int y, int z, List<IBlock> positions) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.positions = positions;
-        this.realBlocks = realBlocks();
+        this.realBlocks = OffsetSchematic.super.realBlocks();
     }
 
-    public OffsetSchematicImpl(List<IBlock> blocks) {
+    public ConstantOffsetSchematic(List<IBlock> blocks) {
         int z1;
         int y1;
         int x1;
@@ -52,5 +50,9 @@ public class OffsetSchematicImpl implements OffsetSchematic {
                 new FileBlock(entry.x() - x, entry.y() - y, entry.z() - z, entry.key())
             );
         }
+    }
+
+    public List<IBlock> positions() {
+        return Collections.unmodifiableList(positions);
     }
 }
