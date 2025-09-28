@@ -52,6 +52,14 @@ public interface Schematic extends Iterable<IBlock> {
         return new FileCoord(maxX, maxY, maxZ);
     }
 
+    default boolean contains(ICoord coord) {
+        for (IBlock blocks : this) {
+            if (blocks.matches(coord)) return true;
+        }
+
+        return false;
+    }
+
     default Schematic moveOrigin(ICoord coord) {
         return moveOrigin(coord.x(), coord.y(), coord.z());
     }

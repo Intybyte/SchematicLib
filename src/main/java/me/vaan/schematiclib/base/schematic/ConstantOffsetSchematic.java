@@ -4,26 +4,32 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import me.vaan.schematiclib.base.block.IBlock;
+import me.vaan.schematiclib.base.block.ICoord;
 import me.vaan.schematiclib.file.block.FileBlock;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-@Setter
 @Getter
 @Accessors(fluent = true)
 public class ConstantOffsetSchematic implements IConstantOffsetSchematic {
     protected final int x, y, z;
-    protected List<IBlock> positions;
-    protected Schematic realBlocks;
+    protected final List<IBlock> positions;
+    protected final Schematic realBlocks;
+
+    protected final ICoord max, min;
 
     public ConstantOffsetSchematic(int x, int y, int z, List<IBlock> positions) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.positions = positions;
+
+        //calculate constants
         this.realBlocks = IConstantOffsetSchematic.super.realBlocks();
+        this.max = realBlocks.getMax();
+        this.min = realBlocks.getMin();
     }
 
     public ConstantOffsetSchematic(List<IBlock> blocks) {
@@ -50,6 +56,20 @@ public class ConstantOffsetSchematic implements IConstantOffsetSchematic {
                 new FileBlock(entry.x() - x, entry.y() - y, entry.z() - z, entry.key())
             );
         }
+
+        //calculate constants
+        this.realBlocks = IConstantOffsetSchematic.super.realBlocks();
+        this.max = realBlocks.getMax();
+        this.min = realBlocks.getMin();
+    }
+
+
+    @Override
+     public boolean contains(ICoord coord) {
+        // optimize search as we already know max and min
+        if (!coord.within(min, max)) return false;
+
+        return IConstantOffsetSchematic.super.contains(coord);
     }
 
     public List<IBlock> positions() {

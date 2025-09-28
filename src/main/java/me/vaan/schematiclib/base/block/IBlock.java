@@ -14,6 +14,14 @@ public interface IBlock extends ICoord {
         return this.key().full().equals(block.key().full());
     }
 
+    default boolean matches(ICoord coord) {
+        if (this.x() != coord.x()) return false;
+        if (this.y() != coord.y()) return false;
+        if (this.z() != coord.z()) return false;
+
+        return true;
+    }
+
     default boolean sameType(IBlock block) {
         return key().equals(block.key());
     }
