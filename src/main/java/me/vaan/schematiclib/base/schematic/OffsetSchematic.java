@@ -3,6 +3,7 @@ package me.vaan.schematiclib.base.schematic;
 import me.vaan.schematiclib.base.block.IBlock;
 import me.vaan.schematiclib.base.block.ICoord;
 import me.vaan.schematiclib.file.block.FileBlock;
+import me.vaan.schematiclib.file.block.FileCoord;
 import me.vaan.schematiclib.file.schematic.FileSchematic;
 
 import java.util.ArrayList;
@@ -27,5 +28,15 @@ public interface OffsetSchematic extends Schematic, ICoord {
         }
 
         return new FileSchematic(blocks);
+    }
+
+    @Override
+    default boolean contains(FileCoord coord) {
+        FileCoord toCheck = new FileCoord(
+            coord.x() - this.x(),
+            coord.y() - this.y(),
+            coord.z() - this.z()
+        );
+        return Schematic.super.contains(toCheck);
     }
 }
