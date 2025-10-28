@@ -3,19 +3,23 @@ package me.vaan.schematiclib.base.schematic;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import me.vaan.schematiclib.base.block.BlockKey;
 import me.vaan.schematiclib.base.block.IBlock;
 import me.vaan.schematiclib.base.block.ICoord;
 import me.vaan.schematiclib.file.block.FileBlock;
+import me.vaan.schematiclib.file.block.FileCoord;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Accessors(fluent = true)
 public class ConstantOffsetSchematic implements IConstantOffsetSchematic {
     protected final int x, y, z;
     protected final List<IBlock> positions;
+    protected final Map<FileCoord, BlockKey> blockMap;
     protected final Schematic realBlocks;
 
     protected final ICoord max, min;
@@ -28,6 +32,7 @@ public class ConstantOffsetSchematic implements IConstantOffsetSchematic {
 
         //calculate constants
         this.realBlocks = IConstantOffsetSchematic.super.realBlocks();
+        this.blockMap = Schematic.toBlockMap(positions);
         this.max = realBlocks.getMax();
         this.min = realBlocks.getMin();
     }
@@ -59,13 +64,14 @@ public class ConstantOffsetSchematic implements IConstantOffsetSchematic {
 
         //calculate constants
         this.realBlocks = IConstantOffsetSchematic.super.realBlocks();
+        this.blockMap = Schematic.toBlockMap(positions);
         this.max = realBlocks.getMax();
         this.min = realBlocks.getMin();
     }
 
 
     @Override
-     public boolean contains(ICoord coord) {
+     public boolean contains(FileCoord coord) {
         // optimize search as we already know max and min
         if (!coord.within(min, max)) return false;
 
