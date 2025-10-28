@@ -4,8 +4,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 
-import java.util.Locale;
-
 @Getter
 @Accessors(fluent = true)
 @EqualsAndHashCode
@@ -17,8 +15,12 @@ public class BlockKey {
         this.namespace = namespace;
         this.key = key;
 
-        if (!isOneSeparator(this.full())) {
-            throw new UnsupportedOperationException("Invalid NS keys, found more than 1 ':'");
+        if (this.namespace == null || this.namespace.isEmpty()) {
+            throw new UnsupportedOperationException("Namespace must not be empty");
+        }
+
+        if (this.key == null || this.key.isEmpty()) {
+            throw new UnsupportedOperationException("Key must not be empty");
         }
     }
 
@@ -26,13 +28,16 @@ public class BlockKey {
         return new BlockKey("minecraft", key);
     }
 
-    public static BlockKey fromString(String key) {
-        if (!isOneSeparator(key)) {
-            throw new UnsupportedOperationException("Invalid NS keys, found more than 1 ':'");
+    public static BlockKey fromString(String fullKey) {
+        int index = fullKey.indexOf(':');
+        if (index == -1) {
+            throw new UnsupportedOperationException("Invalid NS keys, didn't find any ':'");
         }
 
-        String[] split = key.split(":");
-        return new BlockKey(split[0], split[1]);
+        String namespace = fullKey.substring(0, index - 1);
+        String key = fullKey.substring(index + 1);
+
+        return new BlockKey(namespace, key);
     }
 
     public String full() {
@@ -41,9 +46,5 @@ public class BlockKey {
 
     public boolean matches(String s) {
         return this.full().equals(s);
-    }
-
-    private static boolean isOneSeparator(String str) {
-        return (str.length() - str.replace(":", "").length()) == 1;
     }
 }
