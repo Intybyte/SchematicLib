@@ -11,4 +11,12 @@ public interface ICoord {
             && this.y() >= min.y() && this.y() <= max.y()
             && this.z() >= min.z() && this.z() <= max.z();
     }
+
+    default boolean sameCoord(ICoord coord) {
+        return this.sameCoord(coord.x(), coord.y(), coord.z());
+    }
+
+    default boolean sameCoord(int x, int y, int z) {
+        return this.x() == x && this.y() == y && this.z() == z;
+    }
 }
