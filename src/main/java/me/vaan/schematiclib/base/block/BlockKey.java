@@ -34,7 +34,7 @@ public class BlockKey {
             throw new UnsupportedOperationException("Invalid NS keys, didn't find any ':'");
         }
 
-        String namespace = fullKey.substring(0, index - 1);
+        String namespace = fullKey.substring(0, index);
         String key = fullKey.substring(index + 1);
 
         return new BlockKey(namespace, key);
