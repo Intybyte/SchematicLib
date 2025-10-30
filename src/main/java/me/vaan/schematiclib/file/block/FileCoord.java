@@ -1,6 +1,7 @@
 package me.vaan.schematiclib.file.block;
 
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import me.vaan.schematiclib.base.block.ICoord;
@@ -8,6 +9,7 @@ import me.vaan.schematiclib.base.block.ICoord;
 @Getter
 @Accessors(fluent = true)
 @AllArgsConstructor
+@EqualsAndHashCode
 public class FileCoord implements ICoord {
     private final int x, y, z;
 
