@@ -83,6 +83,32 @@ public interface SchematicWorldProcessor {
         }
     }
 
+    default OffsetSchematic move(OffsetSchematic schematic, ICoord movement) {
+        NamespaceRegistry reg = registry();
+
+        for (IBlock real : schematic.realBlocks()) {
+            BlockKey key = real.key();
+            NamespaceHandler handler = reg.getNamespaceHandler(key.namespace());
+            if (handler == null) continue;
+
+            IBlock newBlock = new FileBlock(
+                real.x() + movement.x(),
+                real.y() + movement.y(),
+                real.z() + movement.z(),
+                key
+            );
+
+            handler.move(real, newBlock, key);
+        }
+
+        return new OffsetSchematicImpl(
+            movement.x() + schematic.x(),
+            movement.y() + schematic.y(),
+            movement.z() + schematic.z(),
+            schematic
+        );
+    }
+
     default Schematic parseToMaterial(Schematic schematic) {
         List<IBlock> positions = new ArrayList<>();
         NamespaceRegistry reg = registry();
