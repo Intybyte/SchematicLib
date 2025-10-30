@@ -16,6 +16,7 @@ import java.util.Map;
 
 @Getter
 @Accessors(fluent = true)
+@Deprecated
 public class ConstantOffsetSchematic implements IConstantOffsetSchematic {
     protected final int x, y, z;
     protected final List<IBlock> positions;
