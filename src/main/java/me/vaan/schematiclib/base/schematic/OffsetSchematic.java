@@ -30,6 +30,10 @@ public interface OffsetSchematic extends Schematic, ICoord {
         return new FileSchematic(blocks);
     }
 
+    default boolean areRealBlocksCached() {
+        return false;
+    }
+
     @Override
     default boolean contains(FileCoord coord) {
         FileCoord toCheck = new FileCoord(

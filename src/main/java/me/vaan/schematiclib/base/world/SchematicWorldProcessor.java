@@ -2,8 +2,9 @@ package me.vaan.schematiclib.base.world;
 
 import me.vaan.schematiclib.base.block.BlockKey;
 import me.vaan.schematiclib.base.block.IBlock;
+import me.vaan.schematiclib.base.block.ICoord;
+import me.vaan.schematiclib.base.namespace.NamespaceHandler;
 import me.vaan.schematiclib.base.namespace.NamespaceRegistry;
-import me.vaan.schematiclib.base.schematic.IConstantOffsetSchematic;
 import me.vaan.schematiclib.base.schematic.OffsetSchematic;
 import me.vaan.schematiclib.base.schematic.OffsetSchematicImpl;
 import me.vaan.schematiclib.base.schematic.Schematic;
@@ -20,9 +21,8 @@ public interface SchematicWorldProcessor {
     default boolean matches(OffsetSchematic schematic, UUID world) {
         NamespaceRegistry reg = registry();
 
-        if (schematic instanceof IConstantOffsetSchematic) {
-            IConstantOffsetSchematic constantOffsetSchematic = (IConstantOffsetSchematic) schematic;
-            for (IBlock real : constantOffsetSchematic.realBlocks()) {
+        if (schematic.areRealBlocksCached()) {
+            for (IBlock real : schematic.realBlocks()) {
                 if (real == null) {
                     continue;
                 }
