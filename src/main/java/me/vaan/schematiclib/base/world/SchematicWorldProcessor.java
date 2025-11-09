@@ -1,5 +1,6 @@
 package me.vaan.schematiclib.base.world;
 
+import me.vaan.schematiclib.base.Rotation;
 import me.vaan.schematiclib.base.block.BlockKey;
 import me.vaan.schematiclib.base.block.IBlock;
 import me.vaan.schematiclib.base.block.ICoord;
@@ -86,15 +87,18 @@ public interface SchematicWorldProcessor {
     default OffsetSchematic move(OffsetSchematic schematic, ICoord movement) {
         NamespaceRegistry reg = registry();
 
+        int movX = movement.x();
+        int movY = movement.y();
+        int movZ = movement.z();
         for (IBlock real : schematic.realBlocks()) {
             BlockKey key = real.key();
             NamespaceHandler handler = reg.getNamespaceHandler(key.namespace());
             if (handler == null) continue;
 
             IBlock newBlock = new FileBlock(
-                real.x() + movement.x(),
-                real.y() + movement.y(),
-                real.z() + movement.z(),
+                real.x() + movX,
+                real.y() + movY,
+                real.z() + movZ,
                 key
             );
 
@@ -102,10 +106,68 @@ public interface SchematicWorldProcessor {
         }
 
         return new OffsetSchematicImpl(
-            movement.x() + schematic.x(),
-            movement.y() + schematic.y(),
-            movement.z() + schematic.z(),
+            movX + schematic.x(),
+            movY + schematic.y(),
+            movZ + schematic.z(),
             schematic
+        );
+    }
+
+    // all rotations are along Y
+    default OffsetSchematic rotate(OffsetSchematic schematic, ICoord center, Rotation rotation) {
+        if (rotation == null) {
+            return schematic;
+        }
+
+        NamespaceRegistry reg = registry();
+
+        int cx = center.x();
+        int cy = center.y();
+        int cz = center.z();
+
+        List<IBlock> rotated = new ArrayList<>(schematic.positions().size());
+        for (IBlock real : schematic.realBlocks()) {
+            BlockKey key = real.key();
+            NamespaceHandler handler = reg.getNamespaceHandler(key.namespace());
+            if (handler == null) continue;
+
+            // Translate block so center is origin
+            int relX = real.x() - cx;
+            int relZ = real.z() - cz;
+            int relY = real.y() - cy; // Y unchanged for horizontal rotation
+
+            int newX, newZ;
+            switch (rotation) {
+                case LEFT:  // 90° counterclockwise
+                    newX = -relZ;
+                    newZ = relX;
+                    break;
+                case RIGHT: // 90° clockwise
+                    newX = relZ;
+                    newZ = -relX;
+                    break;
+                case FLIP: // 180°
+                    newX = -relX;
+                    newZ = -relZ;
+                    break;
+                default:
+                    newX = relX;
+                    newZ = relZ;
+            }
+
+            // Translate back to world coords
+            int finalX = cx + newX;
+            int finalY = cy + relY;
+            int finalZ = cz + newZ;
+
+            IBlock newBlock = new FileBlock(finalX, finalY, finalZ, key);
+            rotated.add(newBlock);
+            handler.move(real, newBlock, key);
+        }
+
+        // Rotation does not change offset directly unless schematic stores rotation state
+        return new OffsetSchematicImpl(
+            rotated
         );
     }
 
