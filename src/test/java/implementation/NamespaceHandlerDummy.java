@@ -29,7 +29,7 @@ public class NamespaceHandlerDummy implements NamespaceHandler {
     }
 
     @Override
-    public void move(ICoord from, ICoord to, BlockKey key) {
+    public void move(UUID world, ICoord from, ICoord to, BlockKey key) {
 
     }
 

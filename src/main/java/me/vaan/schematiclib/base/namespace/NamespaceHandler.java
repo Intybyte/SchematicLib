@@ -21,7 +21,7 @@ public interface NamespaceHandler {
      */
     void breakNaturally(IBlock block, UUID world);
 
-    void move(ICoord from, ICoord to, BlockKey key);
+    void move(UUID world, ICoord from, ICoord to, BlockKey key);
 
     /**
      * For custom blocks gets their material key if any
