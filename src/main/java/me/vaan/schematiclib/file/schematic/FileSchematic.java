@@ -13,8 +13,8 @@ import java.util.Map;
 @Getter
 @Accessors(fluent = true)
 public class FileSchematic implements Schematic {
-    protected List<IBlock> positions;
-    protected Map<FileCoord, BlockKey> blockMap;
+    protected final List<IBlock> positions;
+    protected final Map<FileCoord, BlockKey> blockMap;
 
     public FileSchematic(List<IBlock> positions) {
         this.positions = positions;
@@ -22,6 +22,7 @@ public class FileSchematic implements Schematic {
     }
 
     public FileSchematic(Map<FileCoord, BlockKey> blockMap) {
+        this.positions = Schematic.toBlockList(blockMap);
         this.blockMap = blockMap;
     }
 
