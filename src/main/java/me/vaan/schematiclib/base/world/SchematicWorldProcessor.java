@@ -1,7 +1,7 @@
 package me.vaan.schematiclib.base.world;
 
 import me.vaan.schematiclib.base.Rotation;
-import me.vaan.schematiclib.base.block.BlockKey;
+import me.vaan.schematiclib.base.key.BlockKey;
 import me.vaan.schematiclib.base.block.IBlock;
 import me.vaan.schematiclib.base.block.ICoord;
 import me.vaan.schematiclib.base.namespace.NamespaceHandler;
@@ -84,7 +84,11 @@ public interface SchematicWorldProcessor {
         }
     }
 
-    default OffsetSchematic move(OffsetSchematic schematic, ICoord movement) {
+    default OffsetSchematic move(OffsetSchematic schematic, ICoord movement, UUID world) {
+        return move(schematic, movement, world, world);
+    }
+
+    default OffsetSchematic move(OffsetSchematic schematic, ICoord movement, UUID worldFrom, UUID worldTo) {
         NamespaceRegistry reg = registry();
 
         int movX = movement.x();
@@ -95,14 +99,13 @@ public interface SchematicWorldProcessor {
             NamespaceHandler handler = reg.getNamespaceHandler(key.namespace());
             if (handler == null) continue;
 
-            IBlock newBlock = new FileBlock(
-                real.x() + movX,
-                real.y() + movY,
-                real.z() + movZ,
-                key
-            );
 
-            handler.move(real, newBlock, key);
+            int x = real.x();
+            int y = real.y();
+            int z = real.z();
+
+            IBlock state = handler.get(x, y, z, worldFrom);
+            handler.place(state.addClone(x + movX, y + movY, z + movZ), worldTo);
         }
 
         return new OffsetSchematicImpl(
@@ -113,8 +116,11 @@ public interface SchematicWorldProcessor {
         );
     }
 
-    // all rotations are along Y
-    default OffsetSchematic rotate(OffsetSchematic schematic, ICoord center, Rotation rotation) {
+    default OffsetSchematic rotate(OffsetSchematic schematic, ICoord center, Rotation rotation, UUID world) {
+        return rotate(schematic, center, rotation, world, world);
+    }
+
+    default OffsetSchematic rotate(OffsetSchematic schematic, ICoord center, Rotation rotation, UUID worldFrom, UUID worldTo) {
         if (rotation == null) {
             return schematic;
         }
@@ -162,7 +168,9 @@ public interface SchematicWorldProcessor {
 
             IBlock newBlock = new FileBlock(finalX, finalY, finalZ, key);
             rotated.add(newBlock);
-            handler.move(real, newBlock, key);
+
+            IBlock state = handler.get(real.x(), real.y(), real.z(), worldFrom);
+            handler.place(state.addClone(finalX, finalY, finalZ), worldTo);
         }
 
         // Rotation does not change offset directly unless schematic stores rotation state

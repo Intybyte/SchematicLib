@@ -1,4 +1,4 @@
-package me.vaan.schematiclib.base.block;
+package me.vaan.schematiclib.base.key;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

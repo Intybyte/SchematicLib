@@ -3,7 +3,7 @@ package me.vaan.schematiclib.file.formats;
 import com.google.gson.FormattingStyle;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import me.vaan.schematiclib.base.block.BlockKey;
+import me.vaan.schematiclib.base.key.BlockKey;
 import me.vaan.schematiclib.base.block.IBlock;
 import me.vaan.schematiclib.base.formats.SchematicLoader;
 import me.vaan.schematiclib.base.formats.SchematicSaver;

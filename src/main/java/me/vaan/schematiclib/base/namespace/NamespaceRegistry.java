@@ -1,6 +1,6 @@
 package me.vaan.schematiclib.base.namespace;
 
-import me.vaan.schematiclib.base.block.BlockKey;
+import me.vaan.schematiclib.base.key.BlockKey;
 import me.vaan.schematiclib.base.block.IBlock;
 
 import java.util.HashMap;

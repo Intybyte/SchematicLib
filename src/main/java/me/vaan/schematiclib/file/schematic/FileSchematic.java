@@ -2,7 +2,7 @@ package me.vaan.schematiclib.file.schematic;
 
 import lombok.Getter;
 import lombok.experimental.Accessors;
-import me.vaan.schematiclib.base.block.BlockKey;
+import me.vaan.schematiclib.base.key.BlockKey;
 import me.vaan.schematiclib.base.block.IBlock;
 import me.vaan.schematiclib.base.schematic.Schematic;
 import me.vaan.schematiclib.file.block.FileCoord;

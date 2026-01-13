@@ -7,7 +7,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import me.vaan.schematiclib.base.block.BlockKey;
+import me.vaan.schematiclib.base.key.BlockKey;
 
 import java.lang.reflect.Type;
 

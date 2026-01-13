@@ -1,9 +1,10 @@
 package implementation;
 
-import me.vaan.schematiclib.base.block.BlockKey;
+import me.vaan.schematiclib.base.key.BlockKey;
 import me.vaan.schematiclib.base.block.IBlock;
 import me.vaan.schematiclib.base.block.ICoord;
 import me.vaan.schematiclib.base.namespace.NamespaceHandler;
+import me.vaan.schematiclib.file.block.FileBlock;
 
 import java.util.UUID;
 
@@ -15,21 +16,16 @@ public class NamespaceHandlerDummy implements NamespaceHandler {
 
     @Override
     public IBlock get(int x, int y, int z, UUID world) {
-        return null;
+        return new FileBlock(x, y, z, BlockKey.mc("moved_generic"));
     }
 
     @Override
-    public void destroy(IBlock block, UUID world) {
+    public void destroy(ICoord coord, UUID world) {
 
     }
 
     @Override
     public void breakNaturally(IBlock block, UUID world) {
-
-    }
-
-    @Override
-    public void move(UUID world, ICoord from, ICoord to, BlockKey key) {
 
     }
 

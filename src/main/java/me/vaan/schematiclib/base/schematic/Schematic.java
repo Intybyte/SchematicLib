@@ -1,6 +1,6 @@
 package me.vaan.schematiclib.base.schematic;
 
-import me.vaan.schematiclib.base.block.BlockKey;
+import me.vaan.schematiclib.base.key.BlockKey;
 import me.vaan.schematiclib.base.block.IBlock;
 import me.vaan.schematiclib.base.block.ICoord;
 import me.vaan.schematiclib.file.block.FileBlock;
@@ -75,7 +75,7 @@ public interface Schematic extends Iterable<IBlock> {
 
         List<IBlock> newSchematic = new ArrayList<>();
         for (IBlock block : this) {
-            newSchematic.add(block.add(difference));
+            newSchematic.add(block.addClone(difference));
         }
 
         return new FileSchematic(

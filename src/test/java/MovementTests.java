@@ -1,10 +1,9 @@
 import implementation.SchematicWorldProcessorDummy;
 import me.vaan.schematiclib.base.Rotation;
-import me.vaan.schematiclib.base.block.BlockKey;
+import me.vaan.schematiclib.base.key.BlockKey;
 import me.vaan.schematiclib.base.block.IBlock;
 import me.vaan.schematiclib.base.schematic.OffsetSchematic;
 import me.vaan.schematiclib.base.schematic.OffsetSchematicImpl;
-import me.vaan.schematiclib.base.schematic.Schematic;
 import me.vaan.schematiclib.base.world.SchematicWorldProcessor;
 import me.vaan.schematiclib.file.block.FileBlock;
 import me.vaan.schematiclib.file.block.FileCoord;
@@ -30,7 +29,7 @@ public class MovementTests {
         );
 
         OffsetSchematic schematic = new OffsetSchematicImpl(blockList);
-        OffsetSchematic schemMoved = swp.move(schematic, new FileCoord(5, 5, 5));
+        OffsetSchematic schemMoved = swp.move(schematic, new FileCoord(5, 5, 5), null);
 
         assertTrue(schemMoved.contains(new FileCoord(5, 5, 5))); // 0,0,0 -> 5,5,5
 
@@ -52,7 +51,8 @@ public class MovementTests {
         OffsetSchematic schemMoved = swp.rotate(
             schematic,
             new FileCoord(0, 0, 0),
-            Rotation.LEFT
+            Rotation.LEFT,
+            null
         );
 
         schemMoved.realBlocks().forEach(it -> System.out.println(" Coords: " + it.x() + " " + it.y() + " " + it.z()));
