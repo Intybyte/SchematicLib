@@ -12,25 +12,34 @@ import me.vaan.schematiclib.base.key.BlockKeyHolder;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @Getter
 @Accessors(fluent = true)
 @EqualsAndHashCode
-@AllArgsConstructor
 public class BlockInfo implements BlockKeyHolder {
     private final BlockKey key;
     private final Map<String, String> info;
 
     public BlockInfo(BlockKey key) {
-        this(key, new HashMap<>());
+        this(key, null);
+    }
+
+    public BlockInfo(BlockKey key, Map<String, String> info) {
+        this.key = key;
+        this.info = info == null ? Collections.emptyMap() : Collections.unmodifiableMap(info);
     }
 
     public Map<String, String> info() {
-        return Collections.unmodifiableMap(info);
+        return info;
     }
 
     public BlockInfoBuilder toBuilder() {
-        return new BlockInfoBuilder(key, info);
+        if (Objects.equals(info, Collections.emptyMap()) || info.isEmpty()) {
+            return new BlockInfoBuilder(key, new HashMap<>());
+        }
+
+        return new BlockInfoBuilder(key, new HashMap<>(info));
     }
 
     public static BlockInfoBuilder builder() {
@@ -44,7 +53,8 @@ public class BlockInfo implements BlockKeyHolder {
         private BlockKey key;
         private Map<String, String> info = null;
 
-        BlockInfoBuilder() {}
+        BlockInfoBuilder() {
+        }
 
         public BlockInfoBuilder key(BlockKey key) {
             this.key = key;

@@ -70,7 +70,7 @@ public class OffsetSchematicImpl implements OffsetSchematic {
         this.positions = new ArrayList<>();
         for (IBlock entry : blocks) {
             positions.add(
-                new FileBlock(entry.x() - x, entry.y() - y, entry.z() - z, entry.key())
+                new FileBlock(entry.x() - x, entry.y() - y, entry.z() - z, entry.info())
             );
         }
         this.blockMap = Schematic.toBlockMap(positions);
