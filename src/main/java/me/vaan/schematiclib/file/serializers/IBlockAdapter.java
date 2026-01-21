@@ -27,6 +27,7 @@ public class IBlockAdapter implements JsonSerializer<IBlock>, JsonDeserializer<I
         json.addProperty("y", block.y());
         json.addProperty("z", block.z());
         json.add("key", context.serialize(block.key()));
+        json.add("info", context.serialize(block.info().info(), mapType));
 
         return json;
     }
