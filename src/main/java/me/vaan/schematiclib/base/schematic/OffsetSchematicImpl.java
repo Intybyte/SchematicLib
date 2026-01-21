@@ -3,8 +3,8 @@ package me.vaan.schematiclib.base.schematic;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import me.vaan.schematiclib.base.key.BlockKey;
 import me.vaan.schematiclib.base.block.IBlock;
+import me.vaan.schematiclib.base.info.BlockInfo;
 import me.vaan.schematiclib.file.block.FileBlock;
 import me.vaan.schematiclib.file.block.FileCoord;
 import me.vaan.schematiclib.file.schematic.FileSchematic;
@@ -23,7 +23,7 @@ public class OffsetSchematicImpl implements OffsetSchematic {
     protected final int x, y, z;
     protected final List<IBlock> positions;
     protected FileSchematic realBlocks = null;
-    protected final Map<FileCoord, BlockKey> blockMap;
+    protected final Map<FileCoord, BlockInfo> blockMap;
 
     public OffsetSchematicImpl(int x, int y, int z, List<IBlock> positions) {
         this.x = x;
@@ -33,7 +33,7 @@ public class OffsetSchematicImpl implements OffsetSchematic {
         this.blockMap = Schematic.toBlockMap(positions);
     }
 
-    public OffsetSchematicImpl(int x, int y, int z, Map<FileCoord, BlockKey> blockMap) {
+    public OffsetSchematicImpl(int x, int y, int z, Map<FileCoord, BlockInfo> blockMap) {
         this.x = x;
         this.y = y;
         this.z = z;

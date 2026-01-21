@@ -1,8 +1,8 @@
 package me.vaan.schematiclib.base.block;
 
-import me.vaan.schematiclib.base.key.BlockKeyHolder;
+import me.vaan.schematiclib.base.info.BlockInfoHolder;
 
-public interface IBlock extends ICoord, BlockKeyHolder {
+public interface IBlock extends ICoord, BlockInfoHolder {
 
     default boolean matches(IBlock block) {
         if (this.x() != block.x()) return false;

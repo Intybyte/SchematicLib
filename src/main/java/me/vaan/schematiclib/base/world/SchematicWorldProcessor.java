@@ -1,9 +1,12 @@
 package me.vaan.schematiclib.base.world;
 
 import me.vaan.schematiclib.base.Rotation;
-import me.vaan.schematiclib.base.key.BlockKey;
 import me.vaan.schematiclib.base.block.IBlock;
 import me.vaan.schematiclib.base.block.ICoord;
+import me.vaan.schematiclib.base.info.BlockInfo;
+import me.vaan.schematiclib.base.info.handler.BlockHandlerRegistry;
+import me.vaan.schematiclib.base.info.handler.BlockInfoHandler;
+import me.vaan.schematiclib.base.key.BlockKey;
 import me.vaan.schematiclib.base.namespace.NamespaceHandler;
 import me.vaan.schematiclib.base.namespace.NamespaceRegistry;
 import me.vaan.schematiclib.base.schematic.OffsetSchematic;
@@ -117,10 +120,6 @@ public interface SchematicWorldProcessor {
     }
 
     default OffsetSchematic rotate(OffsetSchematic schematic, ICoord center, Rotation rotation, UUID world) {
-        return rotate(schematic, center, rotation, world, world);
-    }
-
-    default OffsetSchematic rotate(OffsetSchematic schematic, ICoord center, Rotation rotation, UUID worldFrom, UUID worldTo) {
         if (rotation == null) {
             return schematic;
         }
@@ -166,11 +165,17 @@ public interface SchematicWorldProcessor {
             int finalY = cy + relY;
             int finalZ = cz + newZ;
 
-            IBlock newBlock = new FileBlock(finalX, finalY, finalZ, key);
+            List<BlockInfoHandler<Rotation>> rotationHandlers = BlockHandlerRegistry.getInstance().getAll(Rotation.class);
+            BlockInfo finalRotData = real.info();
+            for (BlockInfoHandler<Rotation> rotHandler : rotationHandlers) {
+                finalRotData = rotHandler.apply(finalRotData, rotation);
+            }
+
+            IBlock newBlock = new FileBlock(finalX, finalY, finalZ, finalRotData);
             rotated.add(newBlock);
 
-            IBlock state = handler.get(real.x(), real.y(), real.z(), worldFrom);
-            handler.place(state.addClone(finalX, finalY, finalZ), worldTo);
+            IBlock state = handler.get(real.x(), real.y(), real.z(), world);
+            handler.place(state.addClone(finalX, finalY, finalZ), world);
         }
 
         // Rotation does not change offset directly unless schematic stores rotation state

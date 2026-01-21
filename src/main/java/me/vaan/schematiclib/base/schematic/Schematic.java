@@ -1,8 +1,8 @@
 package me.vaan.schematiclib.base.schematic;
 
-import me.vaan.schematiclib.base.key.BlockKey;
 import me.vaan.schematiclib.base.block.IBlock;
 import me.vaan.schematiclib.base.block.ICoord;
+import me.vaan.schematiclib.base.info.BlockInfo;
 import me.vaan.schematiclib.file.block.FileBlock;
 import me.vaan.schematiclib.file.block.FileCoord;
 import me.vaan.schematiclib.file.schematic.FileSchematic;
@@ -16,7 +16,7 @@ import java.util.Map;
 
 public interface Schematic extends Iterable<IBlock> {
     List<IBlock> positions();
-    Map<FileCoord, BlockKey> blockMap();
+    Map<FileCoord, BlockInfo> blockMap();
 
     default Iterator<IBlock> iterator() {
         return positions().iterator();
@@ -83,21 +83,21 @@ public interface Schematic extends Iterable<IBlock> {
         );
     }
 
-    static HashMap<FileCoord, BlockKey> toBlockMap(Collection<IBlock> iBlocks) {
-        HashMap<FileCoord, BlockKey> blockMap = new HashMap<>(iBlocks.size());
+    static HashMap<FileCoord, BlockInfo> toBlockMap(Collection<IBlock> iBlocks) {
+        HashMap<FileCoord, BlockInfo> blockMap = new HashMap<>(iBlocks.size());
 
         for (IBlock ib : iBlocks) {
             FileCoord fileCoord = new FileCoord(ib.x(), ib.y(), ib.z());
-            blockMap.put(fileCoord, ib.key());
+            blockMap.put(fileCoord, ib.info());
         }
 
         return blockMap;
     }
 
-    static ArrayList<IBlock> toBlockList(Map<FileCoord, BlockKey> map) {
+    static ArrayList<IBlock> toBlockList(Map<FileCoord, BlockInfo> map) {
         ArrayList<IBlock> blocks = new ArrayList<>(map.size());
 
-        for (Map.Entry<FileCoord, BlockKey> entry : map.entrySet()) {
+        for (Map.Entry<FileCoord, BlockInfo> entry : map.entrySet()) {
             FileCoord coord = entry.getKey();
 
             blocks.add(

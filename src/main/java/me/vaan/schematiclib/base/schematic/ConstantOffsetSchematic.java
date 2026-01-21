@@ -2,9 +2,9 @@ package me.vaan.schematiclib.base.schematic;
 
 import lombok.Getter;
 import lombok.experimental.Accessors;
-import me.vaan.schematiclib.base.key.BlockKey;
 import me.vaan.schematiclib.base.block.IBlock;
 import me.vaan.schematiclib.base.block.ICoord;
+import me.vaan.schematiclib.base.info.BlockInfo;
 import me.vaan.schematiclib.file.block.FileBlock;
 import me.vaan.schematiclib.file.block.FileCoord;
 
@@ -19,7 +19,7 @@ import java.util.Map;
 public class ConstantOffsetSchematic implements IConstantOffsetSchematic {
     protected final int x, y, z;
     protected final List<IBlock> positions;
-    protected final Map<FileCoord, BlockKey> blockMap;
+    protected final Map<FileCoord, BlockInfo> blockMap;
     protected final Schematic realBlocks;
 
     protected final ICoord max, min;
@@ -58,7 +58,7 @@ public class ConstantOffsetSchematic implements IConstantOffsetSchematic {
         this.positions = new ArrayList<>();
         for (IBlock entry : blocks) {
             positions.add(
-                new FileBlock(entry.x() - x, entry.y() - y, entry.z() - z, entry.key())
+                new FileBlock(entry.x() - x, entry.y() - y, entry.z() - z, entry.info())
             );
         }
 

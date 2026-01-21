@@ -13,7 +13,7 @@ public interface OffsetSchematic extends Schematic, ICoord {
     default IBlock of(IBlock block) {
         if (block == null) return null;
 
-        return new FileBlock(block.x() + this.x(), block.y() + this.y(), block.z() + this.z(), block.key());
+        return new FileBlock(block.x() + this.x(), block.y() + this.y(), block.z() + this.z(), block.info());
     }
 
     /**

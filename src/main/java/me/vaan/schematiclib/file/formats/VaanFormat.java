@@ -3,10 +3,10 @@ package me.vaan.schematiclib.file.formats;
 import com.google.gson.FormattingStyle;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import me.vaan.schematiclib.base.key.BlockKey;
 import me.vaan.schematiclib.base.block.IBlock;
 import me.vaan.schematiclib.base.formats.SchematicLoader;
 import me.vaan.schematiclib.base.formats.SchematicSaver;
+import me.vaan.schematiclib.base.key.BlockKey;
 import me.vaan.schematiclib.base.schematic.Schematic;
 import me.vaan.schematiclib.file.block.FileCoord;
 import me.vaan.schematiclib.file.serializers.BlockKeyAdapter;
@@ -23,7 +23,7 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 /*
- * Base schematic backed by a zipped json list of IBlocks (x,y,z,key)
+ * Base schematic backed by a zipped json list of IBlocks (x,y,z,key,attributes)
  */
 public class VaanFormat implements SchematicLoader, SchematicSaver {
     public static final Gson GSON = new GsonBuilder()
