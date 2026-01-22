@@ -12,16 +12,20 @@ public class BlockKey {
     private final String key;
 
     public BlockKey(String namespace, String key) {
+        if (namespace == null || namespace.isEmpty()) {
+            throw new IllegalArgumentException("Namespace must not be empty");
+        }
+
+        if (key == null || key.isEmpty()) {
+            throw new IllegalArgumentException("Key must not be empty");
+        }
+
+        if (namespace.contains("[") || namespace.contains("]") || key.contains("[") || key.contains("]")) {
+            throw new IllegalArgumentException("Key must not have '[' or ']' characters");
+        }
+
         this.namespace = namespace;
         this.key = key;
-
-        if (this.namespace == null || this.namespace.isEmpty()) {
-            throw new UnsupportedOperationException("Namespace must not be empty");
-        }
-
-        if (this.key == null || this.key.isEmpty()) {
-            throw new UnsupportedOperationException("Key must not be empty");
-        }
     }
 
     public static BlockKey mc(String key) {
@@ -31,7 +35,7 @@ public class BlockKey {
     public static BlockKey fromString(String fullKey) {
         int index = fullKey.indexOf(':');
         if (index == -1) {
-            throw new UnsupportedOperationException("Invalid NS keys, didn't find any ':'");
+            throw new IllegalArgumentException("Invalid NS keys, didn't find any ':'");
         }
 
         String namespace = fullKey.substring(0, index);
